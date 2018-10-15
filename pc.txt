@@ -1,0 +1,73 @@
+def self.makuro_upload(file)
+    ods = Roo::Excelx.new(file.path)
+    test1_name = ods.sheet("test1").column("A")
+    test1_money = ods.sheet("test1").column("H")
+    test1_consumpation = ods.sheet("test1").column("C")
+    test1_summary = ods.sheet("test1").column("D")
+
+    test2_name = ods.sheet("test2").column("D")
+    test2_money = ods.sheet("test2").column("P")
+    test2_consumpation = ods.sheet("test2").column("G")
+    test2_summary = ods.sheet("test2").column("J")
+
+    test2_hash = {}
+    test2_name.each_with_index do |name, i|
+      key = find_test(name, test2_money[i], array_check(test2_consumpation[i]), test2_summary[i])
+      test2_hash[key] = i + 1
+    end
+
+    result = []
+    test1_name.each_with_index do |name, i|
+      key = find_test(name, test1_money[i], test1_consumpation[i], test1_summary[i])
+      if test2_hash[key].present?
+        result.push ods.sheet("test2").row(test2_hash[key])
+      else
+        result.push [key]
+      end
+    end
+
+    result
+  end
+
+  def self.find_test(name, money, consumpation, summary)
+    summary = Moji.zen_to_han(summary)
+    summary = summary.upcase
+    result = name + money.to_i.to_s + consumpation + summary
+    result.gsub!(" ","")
+    result.gsub!("　","")
+    result
+  end
+
+  def self.array_check(consumpation)
+    arr = consumpation.split("-")
+    arr.size == 3 ? arr[2] + arr[1] + arr[0] : consumpation
+  end
+
+
+
+heroku login		lyzrnkfg@gmail.com		ly7524126				
+								
+一直??：Running rake db:migrate on ? infinite-citadel-30079... !								
+? ETIMEDOUT: connect ETIMEDOUT 50.19.103.36:5000								
+								
+??是vpn的??								
+heroku run:detached rake db:migrate								
+								
+								
+								
+提交代?和 git一?								
+git add								
+git commit -m 'xx'								
+git push heroku master								
+								
+								
+production css 不加?								
+production.rb文件add								
+config.public_file_server.enabled = true								
+								
+bundle exec rake assets:precompile				加?到public下面			 
+bundle exec rails s -b 0.0.0.0 -e production	
+								
+								
+logs								
+https://dashboard.heroku.com/apps/lyln/logs								
